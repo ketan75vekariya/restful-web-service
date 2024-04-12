@@ -11,20 +11,27 @@ import org.springframework.stereotype.Component;
 public class UserDaoservice {
 	
 	private static List<User> users = new ArrayList<>();
-
+	
+	private static int userCount = 0;
 	static {
-		users.add(new User(1,"Adam", LocalDate.now().minusYears(30)));
-		users.add(new User(2,"Smith", LocalDate.now().minusYears(24)));
-		users.add(new User(3,"Andy", LocalDate.now().minusYears(31)));
-		users.add(new User(4,"Samantha", LocalDate.now().minusYears(28)));
-		users.add(new User(5,"Vickey", LocalDate.now().minusYears(35)));
-		users.add(new User(6,"Amanda", LocalDate.now().minusYears(21)));
-		users.add(new User(7,"Sarah", LocalDate.now().minusYears(22)));
-		users.add(new User(8,"wilson", LocalDate.now().minusYears(32)));
+		users.add(new User(++userCount,"Adam", LocalDate.now().minusYears(30)));
+		users.add(new User(++userCount,"Smith", LocalDate.now().minusYears(24)));
+		users.add(new User(++userCount,"Andy", LocalDate.now().minusYears(31)));
+		users.add(new User(++userCount,"Samantha", LocalDate.now().minusYears(28)));
+		users.add(new User(++userCount,"Vickey", LocalDate.now().minusYears(35)));
+		users.add(new User(++userCount,"Amanda", LocalDate.now().minusYears(21)));
+		users.add(new User(++userCount,"Sarah", LocalDate.now().minusYears(22)));
+		users.add(new User(++userCount,"wilson", LocalDate.now().minusYears(32)));
 	}
 	
 	public List<User> findAll(){
 		return users;
+	}
+	
+	public User save(User user) {
+		user.setID(++userCount);
+		users.add(user);
+		return user;
 	}
 
 	public User findById(int id) {
