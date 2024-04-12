@@ -1,5 +1,38 @@
 package com.first.rest.webservice.restfulwebservice.user;
 
-public class User {
+import java.time.LocalDate;
 
+public class User {
+	private Integer ID;
+	private String name;
+	private LocalDate birthdate;
+	public User(Integer iD, String name, LocalDate birthdate) {
+		super();
+		ID = iD;
+		this.name = name;
+		this.birthdate = birthdate;
+	}
+	public Integer getID() {
+		return ID;
+	}
+	public void setID(Integer iD) {
+		ID = iD;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+	public void setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
+	}
+	@Override
+	public String toString() {
+		return "User [ID=" + ID + ", name=" + name + ", birthdate=" + birthdate + "]";
+	}
+	
 }
