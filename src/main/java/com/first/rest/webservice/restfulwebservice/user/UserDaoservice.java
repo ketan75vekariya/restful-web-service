@@ -38,4 +38,10 @@ public class UserDaoservice {
 		Predicate<? super User> predicate = user -> user.getID().equals(id);
 		return users.stream().filter(predicate).findFirst().orElse(null);
 	}
+	
+	public void deleteById(int id) {
+		Predicate<? super User> predicate = user -> user.getID().equals(id);
+		users.removeIf(predicate);
+	}
+	
 }
