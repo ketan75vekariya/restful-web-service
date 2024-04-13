@@ -2,9 +2,16 @@ package com.first.rest.webservice.restfulwebservice.user;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+
 public class User {
 	private Integer ID;
+	
+	@Size(min =2, message = "Name should have atleast 2 character")
 	private String name;
+	
+	@Past(message = "Birth date should be in the past")
 	private LocalDate birthdate;
 	public User(Integer iD, String name, LocalDate birthdate) {
 		super();
