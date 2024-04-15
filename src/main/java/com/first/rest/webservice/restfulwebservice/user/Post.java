@@ -1,5 +1,7 @@
 package com.first.rest.webservice.restfulwebservice.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ public class Post {
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private User user;
 
 	public Integer getID() {

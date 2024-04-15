@@ -25,23 +25,28 @@ import jakarta.validation.Valid;
 @RestController
 public class UserJpaResource {
 	
-	private UserRepository repository;
+	private UserRepository userRepository;
 	
 	private PostRepository postRepository;
 	
-	public UserJpaResource(UserRepository repository, PostRepository postRepository) {
-		this.repository = repository;
+	public UserJpaResource(UserRepository userRepository, PostRepository postRepository) {
+		this.userRepository = userRepository;
 		this.postRepository=postRepository;
 	}
 	@GetMapping("/jpa/users")
 	public List<User> retrieveAllUsers(){
-		return repository.findAll();
+		return userRepository.findAll();
+	}
+	
+	@GetMapping("/jpa/posts")
+	public List<Post> retrieveAllPost(){
+		return postRepository.findAll();
 	}
 	
 	
 	@GetMapping("/jpa/users/{id}")
 	public EntityModel<User> retrieveUser(@PathVariable int id ){
-		Optional<User> user = repository.findById(id);
+		Optional<User> user = userRepository.findById(id);
 		if(user.isEmpty()) {
 			throw new UserNotFoundExeption("id:" + id);
 		}
@@ -51,15 +56,27 @@ public class UserJpaResource {
 		return entityModel ;
 	}
 	
+	@GetMapping("/jpa/post/{id}")
+	public EntityModel<Post> retrievePost(@PathVariable int id ){
+		Optional<Post> post = postRepository.findById(id);
+		if(post.isEmpty()) {
+			throw new UserNotFoundExeption("id:" + id);
+		}
+		EntityModel<Post> entityModel = EntityModel.of(post.get());
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllPost());
+		entityModel.add(link.withRel("all-posts"));
+		return entityModel ;
+	}
+	
 	@DeleteMapping("/jpa/users/{id}")
 	public void deleteUser(@PathVariable int id ){
-		repository.deleteById(id);
+		userRepository.deleteById(id);
 		
 	}
 	
 	@GetMapping("/jpa/users/{id}/posts")
 	public List<Post> retrivePostForUser(@PathVariable int id ){
-		Optional<User> user = repository.findById(id);
+		Optional<User> user = userRepository.findById(id);
 		if(user.isEmpty()) {
 			throw new UserNotFoundExeption("id:" + id);
 		}
@@ -70,7 +87,7 @@ public class UserJpaResource {
 	
 	@PostMapping("/jpa/users/{id}/posts")
 	public ResponseEntity<Object> createPostForUser(@PathVariable int id,@Valid @RequestBody Post post ){
-		Optional<User> user = repository.findById(id);
+		Optional<User> user = userRepository.findById(id);
 		if(user.isEmpty()) {
 			throw new UserNotFoundExeption("id:" + id);
 			
@@ -86,7 +103,7 @@ public class UserJpaResource {
 	
 	@PostMapping("/jpa/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		User savedUser = repository.save(user);
+		User savedUser = userRepository.save(user);
 		URI location= ServletUriComponentsBuilder.fromCurrentRequest()
 						.path("/{id}")
 						.buildAndExpand(savedUser.getID())
